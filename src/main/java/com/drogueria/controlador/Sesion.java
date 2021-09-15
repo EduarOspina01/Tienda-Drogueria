@@ -44,8 +44,8 @@ public class Sesion extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter out = response.getWriter(); //Crea un objeto de la clase PrintWriter que permite mostrar salidas en codigo HTML
-		String usuario = request.getParameter("txtUser"); // se almacena la peticion del usuario en una variable String
-		String contrasena = request.getParameter("txtPass"); // se almacena la peticion del usuario en una variable String
+		String usuario = request.getParameter("txtUsuario"); // se almacena la peticion del usuario en una variable String
+		String contrasena = request.getParameter("txtContraseña"); // se almacena la peticion del usuario en una variable String
 		if (usuario != "" && contrasena != "" ) { //Condicional que valida si los campos no son vacios
 			userDTO = crud.validarUsuario(usuario, contrasena);
 			if (userDTO.getUsuario() == null || userDTO.getContrasena()==null) {
