@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
 <meta charset="ISO-8859-1">
 <meta charset="utf-8">
@@ -12,7 +12,7 @@
 	rel="stylesheet"
 	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
 	crossorigin="anonymous">
-	
+
 <style type="text/css">
 body {
 	background:
@@ -22,7 +22,7 @@ body {
 .bg {
 	background-image: url(img/logo2.png);
 	background-position: center;
-	background-size: cover; 
+	background-size: cover;
 }
 </style>
 
@@ -38,7 +38,10 @@ body {
 	<div = class="container w-75 bg-primary mt-5 rounded shadow">
 		<!-- Se crean un div con la clase row para encapsular todo el codigo HTML y CSS-->
 		<div = class="row align-items-stretch">
-			<div = class="col bg bg-white d-none d-lg-block col-md-5 col-lg-5 col-xl-6 rounded"><!-- Responsive --></div>
+			<div
+				= class="col bg bg-white d-none d-lg-block col-md-5 col-lg-5 col-xl-6 rounded">
+				<!-- Responsive -->
+			</div>
 			<div = class="col bg-white p-5 rounded-end">
 				<!-- clase que crea una columna o marco invisible -->
 				<div class="text-end">
@@ -51,28 +54,51 @@ body {
 				<!-- la clase fw-bold da negrilla text center centra y pt y mb da volumen al texto -->
 				<!-- LOGIN -->
 
-				<form action="Sesion" method="post">
+				<form action="Sesion" method="POST">
 					<!-- formulario -->
 					<div class="mb-4">
 						<!-- margen al texto -->
 						<label class="form-label">Usuario</label> <input type="text"
 							class="form-control" name="txtUsuario">
+						<!-- Input Usuario -->
 					</div>
 					<div class="mb-4">
 						<label for="password" class="form-label">Contraseña</label> <input
-							type="password" class="form-control" name="">
+							type="password" class="form-control" name="txtContraseña">
+						<!-- Input Contraseña -->
 					</div>
 
 					<div class="text-center">
 						<!-- una cuadricula para que el boton quede releno en toda la columna -->
-						<button type="submit" name="btnIngresar"
-							class="btn btn-success my-1">Ingresar</button>
+						<button type="submit" name="accion" class="btn btn-success my-1"
+							value="Ingresar">Ingresar</button>
+						<!-- Boton de ingreso -->
 					</div>
 				</form>
-
 			</div>
 
 		</div>
 	</div>
+
+	<%
+	String accion = request.getParameter("accion");
+	//Al hacer click en el botón ingresar
+	if (accion.equalsIgnoreCase("Ingresar")) {
+		//Crea dos strings, una para el user y otra para el password.
+		String username = request.getParameter("txtUsuario");
+		String password = request.getParameter("txtContraseña");
+
+		//Si alguna de las dos son nulas
+		if (username == "" || password == "") {
+			//Muestra un mensaje javascript señalando que faltan campos por llenar
+			out.println("<script>alert('Por favor llene todos los campos');</script>");
+		}
+		//Si no...
+		else {
+			//Muestra un mensaje javascript señalando que hay daros erróneos
+			out.println("<script>alert('Usuario o contraseña incorrecta');</script>");
+		}
+	}
+	%>
 </body>
 </html>

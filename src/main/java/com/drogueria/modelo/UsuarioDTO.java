@@ -1,5 +1,10 @@
 package com.drogueria.modelo;
 
+/**
+ * Clase de DTO de la tabla Usuario del proyecto drogueria ciclo3
+ * @author cesar
+ *
+ */
 public class UsuarioDTO {
 	
 	private long cedula;
@@ -12,12 +17,25 @@ public class UsuarioDTO {
 		// TODO Auto-generated constructor stub
 	}
 
+	/**
+	 * Constructor que inicializa el objeto con los parametos usuario y contraseña
+	 * @param usuario 
+	 * @param contrasena
+	 */
 	public UsuarioDTO(String usuario, String contrasena) {
 		super();
 		this.usuario = usuario;
 		this.contrasena = contrasena;
 	}
-
+	
+	/**
+	 * Constructor que inicializa todos los atributos de la tabla usuario
+	 * @param cedula
+	 * @param nombre
+	 * @param email
+	 * @param usuario
+	 * @param contrasena
+	 */
 	public UsuarioDTO(long cedula, String nombre, String email, String usuario, String contrasena) {
 		super();
 		this.cedula = cedula;
@@ -26,7 +44,10 @@ public class UsuarioDTO {
 		this.usuario = usuario;
 		this.contrasena = contrasena;
 	}
-
+	
+	/*
+	 * Getters y Setters
+	 */
 	public String getUsuario() {
 		return usuario;
 	}

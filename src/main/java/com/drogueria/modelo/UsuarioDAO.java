@@ -14,24 +14,30 @@ public class UsuarioDAO {
 		// TODO Auto-generated constructor stub
 	}
 	
+	/**
+	 * Metodo que valida en la base de datos segun los atributos de usuario y contraseña
+	 * @param user parametro Usuario para ingreso de sesion
+	 * @param pass parametro Contraseña para ingreso de sesion
+	 * @return retorna un objeto de tipo UsuarioDTO
+	 */
 	public UsuarioDTO validarUsuario(String user, String pass) {
 		conectar = new Conexion();
 		UsuarioDTO usuario = new UsuarioDTO();
 		String sql = "SELECT * FROM usuario WHERE usuario = ? and password = ?";
-		System.out.println("ENTRO METODO");
+		System.out.println("ENTRO METODO validar");
 		try {
 			sentencia = conectar.getBase().prepareStatement(sql);
 			sentencia.setString(1, user);
 			sentencia.setString(2, pass);
 			resultado = sentencia.executeQuery();
-			System.out.println("ENTRO TRY");
+			System.out.println("ENTRO TRY validar");
 			while (resultado.next()) {
 				usuario.setCedula(Long.parseLong(resultado.getString(2)));
 				usuario.setNombre(resultado.getString(3));
 				usuario.setEmail(resultado.getString(4));
 				usuario.setUsuario(resultado.getString(5));
 				usuario.setContrasena(resultado.getString(6));
-				System.out.println("ENTRO FINAL WHLIE");
+				System.out.println("ENTRO FINAL WHLIE validar");
 				System.out.println(usuario.getContrasena());
 			}
 		} catch (Exception e) {
@@ -41,6 +47,15 @@ public class UsuarioDAO {
 		return usuario;
 	}
 	
+	/**
+	 * Metodo que añade un registro a la base de datos
+	 * @param cedula recibe el parametro cedula para añadir
+	 * @param nombre recibe el parametro nombre para añadir
+	 * @param email recibe el parametro email para añadir
+	 * @param usuario recibe el parametro usuario para añadir
+	 * @param password recibe el parametro contraseña para añadir
+	 * @return retorna un valor TRUE si añadio un registro, retorna un valor FALSE si no aladio ningun registro
+	 */
 	public boolean crearUsuario(long cedula,String nombre,String email, String usuario, String password) {
 		conectar = new Conexion();
 		UsuarioDTO userDTO = new UsuarioDTO(cedula, nombre, email, usuario, password);
@@ -62,6 +77,11 @@ public class UsuarioDAO {
 		return false;
 	}
 	
+	/**
+	 * Metodo que consulta en la base de datos segun el atributo de la cedula
+	 * @param cedula parametro que usa la cedula como filtro de busqueda
+	 * @return retorna un objeto de tipo usuarioDTO
+	 */
 	public UsuarioDTO consultarUsuario(String cedula) {
 		conectar = new Conexion();
 		UsuarioDTO userDTO = new UsuarioDTO();
@@ -86,6 +106,10 @@ public class UsuarioDAO {
 		return userDTO;
 	}
 	
+	/**
+	 * Metodo principal que se usa para hacer pruebas de los metodos creados
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		UsuarioDTO usuario = new UsuarioDTO();
 		UsuarioDAO dao = new UsuarioDAO();
