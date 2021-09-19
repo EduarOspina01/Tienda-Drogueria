@@ -35,19 +35,19 @@ h3, p {
 			<ul class="navbar-nav">
 				<li class="nav-item active"><a
 					style="margin-left: 10px; border: none"
-					class="btn btn-outline-light" href="Controlador?accion=Principal">Inicio</a></li><!-- Boton Navbar Inicio  -->
+					class="btn btn-outline-light" href="Controlador?menu=Principal">Inicio</a></li><!-- Boton Navbar Inicio  -->
 				<li class="nav-item"><a style="margin-left: 10px; border: none"
-					class="btn btn-outline-light" href="Controlador?accion=Usuario">Usuarios</a></li><!-- Boton Navbar Usuario  -->
+					class="btn btn-outline-light" href="Controlador?menu=Usuario&accion=Listar">Usuarios</a></li><!-- Boton Navbar Usuario  -->
 				<li class="nav-item"><a style="margin-left: 10px; border: none"
-					class="btn btn-outline-light" href="Controlador?accion=Cliente">Clientes</a></li><!-- Boton Navbar Cliente  -->
+					class="btn btn-outline-light" href="Controlador?menu=Cliente">Clientes</a></li><!-- Boton Navbar Cliente  -->
 				<li class="nav-item"><a style="margin-left: 10px; border: none"
-					class="btn btn-outline-light" href="Controlador?accion=Proveedor">Proveedores</a></li><!-- Boton Navbar Proveedor  -->
+					class="btn btn-outline-light" href="Controlador?menun=Proveedor">Proveedores</a></li><!-- Boton Navbar Proveedor  -->
 				<li class="nav-item"><a style="margin-left: 10px; border: none"
-					class="btn btn-outline-light" href="Controlador?accion=Producto">Productos</a></li><!-- Boton Navbar Productos  -->
+					class="btn btn-outline-light" href="Controlador?menu=Producto">Productos</a></li><!-- Boton Navbar Productos  -->
 				<li class="nav-item"><a style="margin-left: 10px; border: none"
-					class="btn btn-outline-light" href="Controlador?accion=Ventas">Ventas</a></li><!-- Boton Navbar Ventas  -->
+					class="btn btn-outline-light" href="Controlador?menu=Ventas">Ventas</a></li><!-- Boton Navbar Ventas  -->
 				<li class="nav-item"><a style="margin-left: 10px; border: none"
-					class="btn btn-outline-light" href="Controlador?accion=Reporte">Reportes</a></li><!-- Boton Navbar Reportes  -->
+					class="btn btn-outline-light" href="Controlador?menu=Reporte">Reportes</a></li><!-- Boton Navbar Reportes  -->
 			</ul>
 		</div>
 		<!-- Dropdown boton de sesion y fin de sesion  -->
@@ -80,14 +80,6 @@ h3, p {
 
 	<!-- FALTA CUADRAR PARA QUE SE VISUALIZEN LAS PAGINAS -->
 	
-	<!-- Scrip de Bootstrap5  -->
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
-		crossorigin="anonymous">
-		
-	</script>
-	
 	<!-- Container donde se encuentra el logo y el texto de bienvenida  -->
 	<div class = "container">
 		<div class = "row">
@@ -99,5 +91,13 @@ h3, p {
 			</div>
 		</div>
 	</div>
+	
+	<!-- Scrip de Bootstrap5  -->
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+		crossorigin="anonymous">
+		
+	</script>
 	</body>
 </html>

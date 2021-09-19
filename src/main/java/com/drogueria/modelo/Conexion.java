@@ -9,7 +9,7 @@ import java.sql.*;
  */
 public class Conexion {
 	private Connection base = null;
-    private String url = "jdbc:mysql://localhost:3306/drogueria";
+    private String url = "jdbc:mysql://localhost:3306/db_drugstore";
     private String user = "root";
     private String pass = "admin";
     

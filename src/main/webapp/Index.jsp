@@ -81,24 +81,28 @@ body {
 	</div>
 
 	<%
-	String accion = request.getParameter("accion");
-	//Al hacer click en el botón ingresar
-	if (accion.equalsIgnoreCase("Ingresar")) {
-		//Crea dos strings, una para el user y otra para el password.
-		String username = request.getParameter("txtUsuario");
-		String password = request.getParameter("txtContraseña");
+	String  accion = request.getParameter("accion");
+	if (accion != null){
+		accion = request.getParameter("accion");
+		//Al hacer click en el botón ingresar
+		if (accion.equalsIgnoreCase("Ingresar")) {
+			//Crea dos strings, una para el user y otra para el password.
+			String username = request.getParameter("txtUsuario");
+			String password = request.getParameter("txtContraseña");
 
-		//Si alguna de las dos son nulas
-		if (username == "" || password == "") {
-			//Muestra un mensaje javascript señalando que faltan campos por llenar
-			out.println("<script>alert('Por favor llene todos los campos');</script>");
+			//Si alguna de las dos son nulas
+			if (username == "" || password == "") {
+				//Muestra un mensaje javascript señalando que faltan campos por llenar
+				out.println("<script>alert('Por favor llene todos los campos');</script>");
+			}
+			//Si no...
+			else {
+				//Muestra un mensaje javascript señalando que hay daros erróneos
+				out.println("<script>alert('Usuario o contraseña incorrecta');</script>");
+			}
 		}
-		//Si no...
-		else {
-			//Muestra un mensaje javascript señalando que hay daros erróneos
-			out.println("<script>alert('Usuario o contraseña incorrecta');</script>");
-		}
-	}
+	}							
+	
 	%>
 </body>
 </html>

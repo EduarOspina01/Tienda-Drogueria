@@ -2,6 +2,8 @@ package com.drogueria.modelo;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UsuarioDAO {
 	
@@ -23,7 +25,7 @@ public class UsuarioDAO {
 	public UsuarioDTO validarUsuario(String user, String pass) {
 		conectar = new Conexion();
 		UsuarioDTO usuario = new UsuarioDTO();
-		String sql = "SELECT * FROM usuario WHERE usuario = ? and password = ?";
+		String sql = "SELECT * FROM usuarios WHERE usuario = ? and password = ?";
 		System.out.println("ENTRO METODO validar");
 		try {
 			sentencia = conectar.getBase().prepareStatement(sql);
@@ -59,7 +61,7 @@ public class UsuarioDAO {
 	public boolean crearUsuario(long cedula,String nombre,String email, String usuario, String password) {
 		conectar = new Conexion();
 		UsuarioDTO userDTO = new UsuarioDTO(cedula, nombre, email, usuario, password);
-		String sql = "INSERT INTO usuario (cedula_usuario,nombre_usuario,email_usuario,usuario,password) VALUES (?,?,?,?,?)";
+		String sql = "INSERT INTO usuarios (cedula_usuario,nombre_usuario,email_usuario,usuario,password) VALUES (?,?,?,?,?)";
 		System.out.println("ENTRO METODO");
 		try {
 			sentencia = conectar.getBase().prepareStatement(sql);
@@ -85,7 +87,7 @@ public class UsuarioDAO {
 	public UsuarioDTO consultarUsuario(String cedula) {
 		conectar = new Conexion();
 		UsuarioDTO userDTO = new UsuarioDTO();
-		String sql = "SELECT * FROM usuario WHERE cedula_usuario = ?";
+		String sql = "SELECT * FROM usuarios WHERE cedula_usuario = ?";
 		try {
 			sentencia = conectar.getBase().prepareStatement(sql);
 			sentencia.setString(1, cedula);
@@ -106,6 +108,54 @@ public class UsuarioDAO {
 		return userDTO;
 	}
 	
+	public List listarUsuario() {
+		conectar = new Conexion();
+		List<UsuarioDTO> lista = new ArrayList<>();
+		String sql = "SELECT * FROM usuarios ";
+		try {
+			sentencia = conectar.getBase().prepareStatement(sql);
+			resultado = sentencia.executeQuery();
+			while (resultado.next()) {
+				UsuarioDTO userDTO = new UsuarioDTO();
+				userDTO.setCedula(Long.parseLong(resultado.getString(2)));
+				userDTO.setNombre(resultado.getString(3));
+				userDTO.setEmail(resultado.getString(4));
+				userDTO.setUsuario(resultado.getString(5));
+				userDTO.setContrasena(resultado.getString(6));
+				lista.add(userDTO);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return lista;
+	}
+	
+	public boolean  eliminarUsuario (String cedula) {
+		conectar = new Conexion();
+		UsuarioDTO userDTO = new UsuarioDTO();
+		System.out.println("ENTRO METODO validar");
+		boolean result = false;
+		try {
+			
+			String sql = "DELETE FROM usuarios WHERE cedula_usuario = ?";
+			sentencia = conectar.getBase().prepareStatement(sql);
+			sentencia.setString(1, cedula);
+		   int v = sentencia.executeUpdate();
+			
+			if(v > 0) { 
+					result = true;
+			}else {
+				System.out.println("No se encontro el usuario");
+			  }
+			
+		} catch (Exception e) {
+			 System.err.println("Error al eliminar" + e.getMessage());
+			//System.out.println("Entro en catch");	
+		}
+		
+		return result;
+	}
+	
 	/**
 	 * Metodo principal que se usa para hacer pruebas de los metodos creados
 	 * @param args
@@ -113,9 +163,12 @@ public class UsuarioDAO {
 	public static void main(String[] args) {
 		UsuarioDTO usuario = new UsuarioDTO();
 		UsuarioDAO dao = new UsuarioDAO();
+		//usuario = dao.consultarUsuario("1022420439");
 		usuario = dao.consultarUsuario("1022420439");
+		System.out.println(usuario.getNombre());
+		System.out.println(usuario.getEmail());
 		System.out.println(usuario.getUsuario());
-		System.out.println(usuario.getContrasena());
+		//System.out.println(usuario.getContrasena());
 	}
 
 }

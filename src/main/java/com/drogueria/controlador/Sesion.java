@@ -61,7 +61,7 @@ public class Sesion extends HttpServlet {
 				userDTO = crud.validarUsuario(usuario, contrasena); // metodo que valida en la base de datos y trae un objeto de tipo UsuarioDTO
 				if (userDTO.getUsuario() != null || userDTO.getContrasena() != null) { //condicional que valida si el objeto usuario no esta nulo
 					request.setAttribute("usuario", userDTO);//peticion que envia el valor de un objeto a un objeto en HTML
-					request.getRequestDispatcher("Controlador?accion=Principal").forward(request, response);//Peticion que redirecciona por URL
+					request.getRequestDispatcher("Controlador?menu=Principal").forward(request, response);//Peticion que redirecciona por URL
 				} else {
 					request.getRequestDispatcher("Index.jsp").forward(request, response);
 				}

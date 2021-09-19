@@ -2,6 +2,8 @@ package com.drogueria.controlador;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,91 +21,125 @@ import com.drogueria.modelo.UsuarioDTO;
 public class CRUD extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private UsuarioDAO crud = new UsuarioDAO();
-	private UsuarioDTO userDTO = new UsuarioDTO();   
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public CRUD() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+	private UsuarioDTO userDTO = new UsuarioDTO();
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
-		
+	public CRUD() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		//doGet(request, response);
+		Long cedula;
+		cedula=Long.parseLong(request.getParameter("id"));
+		System.out.println(cedula);
+		userDTO = crud.consultarUsuario(String.valueOf(cedula));
+		request.setAttribute("usuario", userDTO);
+		request.getRequestDispatcher("Usuario.jsp").forward(request, response);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		// doGet(request, response);
 		PrintWriter out = response.getWriter();
 		String cedula = request.getParameter("cedula");
 		String nombre = request.getParameter("nombre");
 		String email = request.getParameter("email");
 		String usuario = request.getParameter("user");
 		String contrasena = request.getParameter("pass");
-		String consultar = request.getParameter("btnConsultar");
-		String crear = request.getParameter("btnCrear");
+		String consultar = request.getParameter("Consultar");
+		String Agregar = request.getParameter("Agregar");
+		String Listar = request.getParameter("Listar_Usuarios");
+		String eliminar = request.getParameter("Eliminar");
+		if (Listar != null) {
+			List lista = crud.listarUsuario();
+			request.setAttribute("usuarios", lista);
+			request.getRequestDispatcher("Usuario.jsp").forward(request, response);
+		}
 		if (consultar != null) {
-			if(cedula != "") {
+			if (cedula != "") {
 				userDTO = crud.consultarUsuario(cedula);
-				if(userDTO.getCedula() != 0) {
-					out.println("<h1>Consulta </h1><br>");
-					out.println("<p>Cédula: "+ userDTO.getCedula()+" </p><br>");
-					out.println("<p>Nombre: "+ userDTO.getNombre()+" </p><br>");
-					out.println("<p>E-mail: "+ userDTO.getEmail()+" </p><br>");
-					out.println("<p>Usuario: "+ userDTO.getUsuario()+" </p><br>");
-					out.println("<p>Contraseña: "+ userDTO.getContrasena()+" </p><br>");
-					out.println("<a href = 'Usuario.jsp'>Volver </a>");
-				}else {
+				if (userDTO.getCedula() != 0) {
+					List<UsuarioDTO> lista = new ArrayList<UsuarioDTO>();
+					lista.add(userDTO);
+					request.setAttribute("usuarios", lista);
+					request.getRequestDispatcher("Usuario.jsp").forward(request, response);
+				} else {
 					out.println("<script type=\"text/javascript\">");
 					out.println("alert('El usuario no existe');");
 					out.println("location='Usuario.jsp';");
 					out.println("</script>");
 				}
-					
-			}else {
+
+			} else {
 				out.println("<script type=\"text/javascript\">");
 				out.println("alert('Por favor ingrese el campo cedula');");
 				out.println("location='Usuario.jsp';");
 				out.println("</script>");
 			}
 		}
-		if (crear != null) {
-			if (cedula != "" && nombre != "" && email != "" && usuario != "" && contrasena != "" ) {
-				userDTO = crud.validarUsuario(usuario, contrasena);
-				if (userDTO.getCedula()==Long.parseLong(cedula)) {
+		if (Agregar != null) {
+			if (cedula != "" && nombre != "" && email != "" && usuario != "" && contrasena != "") {
+				userDTO = crud.consultarUsuario(cedula);
+				if (userDTO.getCedula() == Long.parseLong(cedula)) {
 					out.println("<script type=\"text/javascript\">");
 					out.println("alert('El usuario ya existe');");
 					out.println("location='Usuario.jsp';");
 					out.println("</script>");
-				}else {
+				} else {
 					boolean ban = crud.crearUsuario(Long.parseLong(cedula), nombre, email, usuario, contrasena);
 					if (ban) {
 						out.println("<script type=\"text/javascript\">");
 						out.println("alert('Usuario Creado');");
 						out.println("location='Usuario.jsp';");
 						out.println("</script>");
-					}else {
+					} else {
 						out.println("Ha ocurrido un error");
 					}
 				}
-			}else {
+			} else {
 				out.println("<script type=\"text/javascript\">");
 				out.println("alert('Por favor dilegencia todos los campos');");
 				out.println("location='Usuario.jsp';");
 				out.println("</script>");
 			}
 		}
-		
-		
-	}
+		if (eliminar != null) {
+			if (cedula != "") {
+				boolean user = crud.eliminarUsuario(cedula);
+				if (user != false) {
+					out.println("<script type=\"text/javascript\">");
+					out.println("alert('El usuario ha sido eliminado');");
+					out.println("location='Usuario.jsp';");
+					out.println("</script>");
 
+				} else {
+					out.println("<script type=\"text/javascript\">");
+					out.println("alert('El usuario no existe');");
+					out.println("location='Usuario.jsp';");
+					out.println("</script>");
+
+				}
+			} else {
+				out.println("<script type=\"text/javascript\">");
+				out.println("alert('Por favor ingrese el campo cedula');");
+				out.println("location='Usuario.jsp';");
+				out.println("</script>");
+
+			}
+		}
+	}
 }
