@@ -64,6 +64,7 @@ public class CRUD extends HttpServlet {
 		String Agregar = request.getParameter("Agregar");
 		String Listar = request.getParameter("Listar_Usuarios");
 		String eliminar = request.getParameter("Eliminar");
+		String modificar = request.getParameter("Actualizar");
 		if (Listar != null) {
 			List lista = crud.listarUsuario();
 			request.setAttribute("usuarios", lista);
@@ -128,7 +129,7 @@ public class CRUD extends HttpServlet {
 
 				} else {
 					out.println("<script type=\"text/javascript\">");
-					out.println("alert('El usuario no existe');");
+					out.println("alert('Cedula errada');");
 					out.println("location='Usuario.jsp';");
 					out.println("</script>");
 
@@ -139,6 +140,29 @@ public class CRUD extends HttpServlet {
 				out.println("location='Usuario.jsp';");
 				out.println("</script>");
 
+			}
+		}
+		if (modificar != null) {
+			if (cedula != "" && nombre != "" && email != "" && usuario != "" && contrasena != "") {
+				userDTO.setCedula(Long.parseLong(cedula));
+				userDTO.setNombre(nombre);
+				userDTO.setEmail(email);
+				userDTO.setUsuario(usuario);
+				userDTO.setContrasena(contrasena);
+					boolean ban = crud.modificarUsuario(cedula,userDTO);
+					if (ban) {
+						out.println("<script type=\"text/javascript\">");
+						out.println("alert('Datos del Usuario Actualizados');");
+						out.println("location='Usuario.jsp';");
+						out.println("</script>");
+					} else {
+						out.println("Ha ocurrido un error");
+					}
+			} else {
+				out.println("<script type=\"text/javascript\">");
+				out.println("alert('Datos faltantes: Por favor dilegencia todos los campos');");
+				out.println("location='Usuario.jsp';");
+				out.println("</script>");
 			}
 		}
 	}

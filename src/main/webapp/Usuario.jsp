@@ -119,7 +119,7 @@ h3, p {
 
 				</div>
 			</div>
-			<div class="col-lg col-mg col">
+			<div class="col-lg col-mg col-sm col">
 				<div class="card-header bg-success text-light d-flex justify-content-between align-items-center">
 					<span>Presione para Listar los usuarios</span>
 					<form action="CRUD" method ="POST">

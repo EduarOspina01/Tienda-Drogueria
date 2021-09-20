@@ -17,7 +17,9 @@ public class UsuarioDAO {
 	}
 	
 	/**
-	 * Metodo que valida en la base de datos segun los atributos de usuario y contraseña
+	 * Metodo que valida en la base de datos segun los atributos de usuario y
+	 * contraseña
+	 * 
 	 * @param user parametro Usuario para ingreso de sesion
 	 * @param pass parametro Contraseña para ingreso de sesion
 	 * @return retorna un objeto de tipo UsuarioDTO
@@ -26,22 +28,19 @@ public class UsuarioDAO {
 		conectar = new Conexion();
 		UsuarioDTO usuario = new UsuarioDTO();
 		String sql = "SELECT * FROM usuarios WHERE usuario = ? and password = ?";
-		System.out.println("ENTRO METODO validar");
 		try {
 			sentencia = conectar.getBase().prepareStatement(sql);
 			sentencia.setString(1, user);
 			sentencia.setString(2, pass);
 			resultado = sentencia.executeQuery();
-			System.out.println("ENTRO TRY validar");
 			while (resultado.next()) {
-				usuario.setCedula(Long.parseLong(resultado.getString(2)));
-				usuario.setNombre(resultado.getString(3));
-				usuario.setEmail(resultado.getString(4));
-				usuario.setUsuario(resultado.getString(5));
-				usuario.setContrasena(resultado.getString(6));
-				System.out.println("ENTRO FINAL WHLIE validar");
-				System.out.println(usuario.getContrasena());
-			}
+					usuario.setCedula(Long.parseLong(resultado.getString(2)));
+					usuario.setNombre(resultado.getString(3));
+					usuario.setEmail(resultado.getString(4));
+					usuario.setUsuario(resultado.getString(5));
+					usuario.setContrasena(resultado.getString(6));
+				}
+				
 		} catch (Exception e) {
 			System.out.println("ENTRO CATCH");
 			// TODO: handle exception
@@ -62,7 +61,6 @@ public class UsuarioDAO {
 		conectar = new Conexion();
 		UsuarioDTO userDTO = new UsuarioDTO(cedula, nombre, email, usuario, password);
 		String sql = "INSERT INTO usuarios (cedula_usuario,nombre_usuario,email_usuario,usuario,password) VALUES (?,?,?,?,?)";
-		System.out.println("ENTRO METODO");
 		try {
 			sentencia = conectar.getBase().prepareStatement(sql);
 			sentencia.setString(1, String.valueOf(userDTO.getCedula()));
@@ -94,12 +92,16 @@ public class UsuarioDAO {
 			resultado = sentencia.executeQuery();
 			System.out.println("Entro en try");
 			while (resultado.next()) {
+				if(resultado.getString(5).equals("admininicial")) {//Validacion que no permite que se visualize el usuario por defecto
+					return userDTO;
+				}else {
 				userDTO.setCedula(Long.parseLong(resultado.getString(2)));
 				userDTO.setNombre(resultado.getString(3));
 				userDTO.setEmail(resultado.getString(4));
 				userDTO.setUsuario(resultado.getString(5));
 				userDTO.setContrasena(resultado.getString(6));
 				System.out.println(userDTO.getContrasena());
+				}
 			}
 		} catch (Exception e) {
 			System.out.println("Entro en catch");
@@ -117,12 +119,15 @@ public class UsuarioDAO {
 			resultado = sentencia.executeQuery();
 			while (resultado.next()) {
 				UsuarioDTO userDTO = new UsuarioDTO();
+				if(resultado.getString(5).equals("admininicial")) {//si sale algo mal eliminar esto
+				}else {
 				userDTO.setCedula(Long.parseLong(resultado.getString(2)));
 				userDTO.setNombre(resultado.getString(3));
 				userDTO.setEmail(resultado.getString(4));
 				userDTO.setUsuario(resultado.getString(5));
 				userDTO.setContrasena(resultado.getString(6));
 				lista.add(userDTO);
+				}
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -133,13 +138,15 @@ public class UsuarioDAO {
 	public boolean  eliminarUsuario (String cedula) {
 		conectar = new Conexion();
 		UsuarioDTO userDTO = new UsuarioDTO();
-		System.out.println("ENTRO METODO validar");
 		boolean result = false;
 		try {
-			
+			if(cedula.equals("0000000000")) {//si sale algo mal eliminar esto
+				return result;
+			}else {
 			String sql = "DELETE FROM usuarios WHERE cedula_usuario = ?";
 			sentencia = conectar.getBase().prepareStatement(sql);
 			sentencia.setString(1, cedula);
+			
 		   int v = sentencia.executeUpdate();
 			
 			if(v > 0) { 
@@ -147,13 +154,34 @@ public class UsuarioDAO {
 			}else {
 				System.out.println("No se encontro el usuario");
 			  }
-			
+			}
 		} catch (Exception e) {
 			 System.err.println("Error al eliminar" + e.getMessage());
 			//System.out.println("Entro en catch");	
 		}
 		
 		return result;
+	}
+	
+	public boolean modificarUsuario(String cedula, UsuarioDTO userDTO) {
+		conectar = new Conexion();
+		String sql = "UPDATE usuarios SET cedula_usuario = ?,nombre_usuario =? ,email_usuario =?,usuario =?,password =? WHERE cedula_usuario = ?";
+		try {
+			sentencia = conectar.getBase().prepareStatement(sql);
+			sentencia.setString(1, String.valueOf(userDTO.getCedula()));
+			sentencia.setString(2, userDTO.getNombre());
+			sentencia.setString(3, userDTO.getEmail());
+			sentencia.setString(4, userDTO.getUsuario());
+			sentencia.setString(5, userDTO.getContrasena());
+			sentencia.setString(6, String.valueOf(userDTO.getCedula()));
+			if (sentencia.executeUpdate() > 0) {
+				System.out.println("Ejecuto");
+                return true;
+            }
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return false;
 	}
 	
 	/**
@@ -164,7 +192,8 @@ public class UsuarioDAO {
 		UsuarioDTO usuario = new UsuarioDTO();
 		UsuarioDAO dao = new UsuarioDAO();
 		//usuario = dao.consultarUsuario("1022420439");
-		usuario = dao.consultarUsuario("1022420439");
+		usuario = dao.validarUsuario("admininicial","admin123456");
+		//usuario = dao.consultarUsuario("1022420439");
 		System.out.println(usuario.getNombre());
 		System.out.println(usuario.getEmail());
 		System.out.println(usuario.getUsuario());
